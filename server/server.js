@@ -8,10 +8,6 @@ dotenv.config();
 // Import database connection
 const connectDB = require('./config/db');
 
-// Import routes
-const userRoutes = require('./routes/userRoutes');
-const movieRoutes = require('./routes/movieRoutes');
-
 // Create Express app
 const app = express();
 
@@ -22,15 +18,20 @@ connectDB();
 app.use(cors());
 app.use(express.json()); // For parsing application/json
 
+// Import routes
+const userRoutes = require('./routes/userRoutes');
+const movieRoutes = require('./routes/movieRoutes');
+
 // Define Routes
 app.use('/api/users', userRoutes);
 app.use('/api/movies', movieRoutes);
 
+// Home route
 app.get('/', (req, res) => {
   res.send('Movie Recommendation API is running');
 });
 
-// Error handling middleware
+// Error handling middleware - must be after route definitions
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Route not found' });
 });
